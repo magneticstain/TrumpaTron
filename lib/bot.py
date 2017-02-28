@@ -7,6 +7,7 @@ Bot.py
 """
 
 from random import choice,shuffle
+import re
 import tweepy
 
 def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSecret):
@@ -29,6 +30,45 @@ def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSec
 
     return api
 
+def spliceTweets(tweetSet):
+    """
+    Splice a set of tweets into a list of individual clauses
+
+    :param tweetSet: list of Tweepy tweet objects
+    :return: list of post-spliced tweet clauses
+    """
+
+    tweetClauses = []
+
+    # list and splice fetched tweets
+    print('ORIGINAL TWEETS:')
+    for tweet in tweetSet:
+        print('TWEET:', tweet.text)
+
+        # split tweet into list of clauses
+        clauseSet = tweet.text.split('. ')
+
+        # add clause set to master set
+        tweetClauses += clauseSet
+
+    return tweetClauses
+
+def filterTweet(tweetTxt):
+    """
+    Filter out unwanted sub strings within text of tweet, e.g. urls
+
+    :param tweetTxt: raw text of tweet
+    :return: string - filtered tweet text
+    """
+
+    if not tweetTxt:
+        raise ValueError('ERROR: blank tweet text provided')
+    else:
+        # filter out URLs
+        tweetTxt = re.sub(r'[:\s]*http\S+(|\s)', ' ', tweetTxt).strip()
+
+    return tweetTxt
+
 def pruneTweetClauses(tweetClauseSet):
     """
     Prune and deduplicate sets of Tweet clauses
@@ -41,6 +81,10 @@ def pruneTweetClauses(tweetClauseSet):
     prunedTweetClauseSet = list(set(tweetClauseSet))
     prunedTweetClauseSet.sort(key=tweetClauseSet.index)
 
+    # filter tweet text
+    for i in range(0, len(prunedTweetClauseSet)):
+        prunedTweetClauseSet[i] = filterTweet(prunedTweetClauseSet[i])
+
     # sort list of clauses by length
     prunedTweetClauseSet.sort(key=len)
 
@@ -48,6 +92,7 @@ def pruneTweetClauses(tweetClauseSet):
 
 def divideClausesIntoSlices(clauses, numSlices):
     """
+    Split a given set of clauses into N number of slices, where n = numSlices
 
     :param clauses: tweet clauses to divide
     :param numSlices: number of slices to divide clauses into
@@ -71,12 +116,17 @@ def divideClausesIntoSlices(clauses, numSlices):
 
 def getRandomTweetClause(clauses):
     """
+    Choose a random clause from a set of tweet clauses
 
     :param clauses: list of clauses to select from
     :return: clause from given list
     """
 
-    return choice(clauses)
+    # make selection and capitalize the first letter in the clause
+    clause = choice(clauses)
+    clause = clause[0].capitalize() + clause[1:]
+
+    return clause
 
 def generateTweet(tweetClauses, numClausesToUse=3):
     """
@@ -107,7 +157,28 @@ def generateTweet(tweetClauses, numClausesToUse=3):
             currentClause = getRandomTweetClause(clauseSlice)
             middleClauses += currentClause
 
+        # cap w/ period
+        middleClauses += '. '
+
     # concatonate tweet
-    newTweet = longestClause + '. ' + middleClauses + '. ' + shortestClause
+    newTweet = longestClause + '. ' + middleClauses + shortestClause
+
+    # print message length for debugging
+    # print('MSG LENGTH:', str(len(newTweet)))
 
     return newTweet
+
+def sendTweet(api, tweet):
+    """
+
+    :param tweet: tweet text to send
+    :return: bool based on success/fail
+    """
+
+    if tweet:
+        # send tweet to authenticated account using tweepy api connection
+        # api.update_status(tweet)
+
+        return True
+    else:
+        return False
