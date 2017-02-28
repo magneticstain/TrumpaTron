@@ -39,8 +39,9 @@ def main():
     lgLineBreak = '#####################################################################'
 
     # read in config
+    configFile = 'conf/main.cfg'
+    cfg = None
     try:
-        configFile = 'conf/main.cfg'
         cfg = configparser.ConfigParser()
         if os.path.isfile(configFile):
             cfg.read(configFile)
@@ -54,6 +55,8 @@ def main():
         exit(1)
 
     # connect to twitter API and fetch tweets
+    tApi = None
+    tweetSet = []
     try:
         tApi = lib.bot.connectToTwitterAPI(cfg['AUTH']['consumerkey'], cfg['AUTH']['consumersecret'],
                                            cfg['AUTH']['accesstoken'], cfg['AUTH']['accesstokensecret'])
@@ -82,12 +85,13 @@ def main():
 
     # publish tweet
     try:
-        if lib.bot.sendTweet(tApi, newTweet):
-            print('TWEET PUBLISHED SUCCESSFULLY!')
+        tweetPubRslt = lib.bot.sendTweet(tApi, newTweet)
+        if tweetPubRslt == -1:
+            print('[INFO] Tweet not published, discarding...')
         else:
-            print('ERROR: empty tweet sent')
-
-            exit(1)
+            print('TWEET PUBLISHED SUCCESSFULLY! [ ID:',tweetPubRslt.id,']')
+    except ValueError as valErr:
+        print('ERROR: invalid value provided for tweet ::', newTweet, '::', valErr)
     except TweepError as err:
         print('ERROR: could not publish tweet ::', newTweet,'::', err)
 

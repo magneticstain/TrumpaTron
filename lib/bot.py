@@ -8,6 +8,7 @@ Bot.py
 
 from random import choice,shuffle
 import re
+from curses.ascii import ispunct
 import tweepy
 
 def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSecret):
@@ -53,9 +54,9 @@ def spliceTweets(tweetSet):
 
     return tweetClauses
 
-def filterTweet(tweetTxt):
+def formatTweet(tweetTxt):
     """
-    Filter out unwanted sub strings within text of tweet, e.g. urls
+    Format tweet text, e.g. remove urls, strip excess whitespace, add ending punctuation, etc
 
     :param tweetTxt: raw text of tweet
     :return: string - filtered tweet text
@@ -64,7 +65,7 @@ def filterTweet(tweetTxt):
     if not tweetTxt:
         raise ValueError('ERROR: blank tweet text provided')
     else:
-        # filter out URLs
+        # filter out URLs and strip surrounding whitespace
         tweetTxt = re.sub(r'[:\s]*http\S+(|\s)', ' ', tweetTxt).strip()
 
     return tweetTxt
@@ -83,7 +84,7 @@ def pruneTweetClauses(tweetClauseSet):
 
     # filter tweet text
     for i in range(0, len(prunedTweetClauseSet)):
-        prunedTweetClauseSet[i] = filterTweet(prunedTweetClauseSet[i])
+        prunedTweetClauseSet[i] = formatTweet(prunedTweetClauseSet[i])
 
     # sort list of clauses by length
     prunedTweetClauseSet.sort(key=len)
@@ -122,9 +123,15 @@ def getRandomTweetClause(clauses):
     :return: clause from given list
     """
 
-    # make selection and capitalize the first letter in the clause
+    # make selection
     clause = choice(clauses)
+
+    # capitalize the first letter in the clause
     clause = clause[0].capitalize() + clause[1:]
+
+    # make sure it's punctuated
+    if not ispunct(clause[-1]):
+        clause += '!'
 
     return clause
 
@@ -137,7 +144,6 @@ def generateTweet(tweetClauses, numClausesToUse=3):
     :return: new tweet in string format
     """
 
-    newTweet = ''
     slices = divideClausesIntoSlices(tweetClauses, numClausesToUse)
 
     # generate tweet from clause slices
@@ -161,24 +167,32 @@ def generateTweet(tweetClauses, numClausesToUse=3):
         middleClauses += '. '
 
     # concatonate tweet
-    newTweet = longestClause + '. ' + middleClauses + shortestClause
+    newTweet = longestClause + ' ' + middleClauses + shortestClause
 
     # print message length for debugging
     # print('MSG LENGTH:', str(len(newTweet)))
 
     return newTweet
 
-def sendTweet(api, tweet):
+def sendTweet(api, tweet, promptBeforePublish=True):
     """
+    Send new generated Tweet to Twitter API
 
+    :param api: tweepy API connection obj
     :param tweet: tweet text to send
-    :return: bool based on success/fail
+    :param promptBeforePublish: specifies if the user should be prompted before publishing [default: True]
+    :return: int based on success/fail : -1=discarded;0=no tweet provided;1=published
     """
 
     if tweet:
         # send tweet to authenticated account using tweepy api connection
-        # api.update_status(tweet)
+        if promptBeforePublish:
+            shouldPublish = input('Would you like to publish this tweet? [default: Y]: ')
+            shouldPublish = shouldPublish.strip().lower()
+            if shouldPublish != 'y' and shouldPublish != '':
+                return -1
 
-        return True
+        # attempt to publish tweet
+        return api.update_status(tweet)
     else:
-        return False
+        raise ValueError('empty tweet text provided')
