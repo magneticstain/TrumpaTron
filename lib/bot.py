@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 """
+Bot.py
 
 APP: TrumpaTron
 DESC: A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.
@@ -24,10 +25,10 @@ import tweepy
 __author__ = 'Joshua Carlson-Purcell'
 __copyright__ = 'Copyright 2017, CarlsoNet'
 __license__ = 'MIT'
-__version__ = '1.0.0-alpha'
+__version__ = '1.0.0'
 __maintainer__ = 'Joshua Carlson-Purcell'
 __email__ = 'jcarlson@carlso.net'
-__status__ = 'Development'
+__status__ = 'Production'
 
 
 def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSecret):
