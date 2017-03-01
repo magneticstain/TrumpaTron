@@ -1,15 +1,34 @@
 #!/usr/bin/python3
 
 """
-Bot.py
 
-- the background logic that runs TrumpaTron
+APP: TrumpaTron
+DESC: A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.
+AUTHOR: @magneticstain
+CREATION_DATE: 2017-02-27
+
 """
 
+# MODULES
+# | Native
 from random import choice,shuffle
-import re
 from curses.ascii import ispunct
+import re
+
+# | Third-Party
 import tweepy
+
+# | Custom
+
+# METADATA
+__author__ = 'Joshua Carlson-Purcell'
+__copyright__ = 'Copyright 2017, CarlsoNet'
+__license__ = 'MIT'
+__version__ = '1.0.0-alpha'
+__maintainer__ = 'Joshua Carlson-Purcell'
+__email__ = 'jcarlson@carlso.net'
+__status__ = 'Development'
+
 
 def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSecret):
     """
@@ -30,6 +49,7 @@ def connectToTwitterAPI(consumerKey, consumerSecret, accessToken, accessTokenSec
     api = tweepy.API(auth)
 
     return api
+
 
 def spliceTweets(tweetSet):
     """
@@ -54,6 +74,7 @@ def spliceTweets(tweetSet):
 
     return tweetClauses
 
+
 def formatTweet(tweetTxt):
     """
     Format tweet text, e.g. remove urls, strip excess whitespace, add ending punctuation, etc
@@ -69,6 +90,7 @@ def formatTweet(tweetTxt):
         tweetTxt = re.sub(r'[:\s]*http\S+(|\s)', ' ', tweetTxt).strip()
 
     return tweetTxt
+
 
 def pruneTweetClauses(tweetClauseSet):
     """
@@ -90,6 +112,7 @@ def pruneTweetClauses(tweetClauseSet):
     prunedTweetClauseSet.sort(key=len)
 
     return prunedTweetClauseSet
+
 
 def divideClausesIntoSlices(clauses, numSlices):
     """
@@ -115,6 +138,7 @@ def divideClausesIntoSlices(clauses, numSlices):
 
     return slices
 
+
 def getRandomTweetClause(clauses):
     """
     Choose a random clause from a set of tweet clauses
@@ -134,6 +158,7 @@ def getRandomTweetClause(clauses):
         clause += '!'
 
     return clause
+
 
 def generateTweet(tweetClauses, numClausesToUse=3):
     """
@@ -174,25 +199,27 @@ def generateTweet(tweetClauses, numClausesToUse=3):
 
     return newTweet
 
-def sendTweet(api, tweet, promptBeforePublish=True):
+
+def sendTweet(api, tweet, skipPromptBeforePublish=False):
     """
     Send new generated Tweet to Twitter API
 
     :param api: tweepy API connection obj
     :param tweet: tweet text to send
-    :param promptBeforePublish: specifies if the user should be prompted before publishing [default: True]
+    :param skipPromptBeforePublish: specifies if we should prompt the user to publish (FALSE) or assume yes (TRUE)
     :return: int based on success/fail : -1=discarded;0=no tweet provided;1=published
     """
 
     if tweet:
         # send tweet to authenticated account using tweepy api connection
-        if promptBeforePublish:
-            shouldPublish = input('Would you like to publish this tweet? [default: Y]: ')
+        if not skipPromptBeforePublish:
+            shouldPublish = input('=> Would you like to publish this tweet? [y/N]: ')
             shouldPublish = shouldPublish.strip().lower()
-            if shouldPublish != 'y' and shouldPublish != '':
+            if (shouldPublish != 'y' and shouldPublish != 'yes') or not shouldPublish:
                 return -1
 
         # attempt to publish tweet
         return api.update_status(tweet)
     else:
         raise ValueError('empty tweet text provided')
+

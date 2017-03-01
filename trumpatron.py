@@ -11,8 +11,9 @@ CREATION_DATE: 2017-02-27
 
 # MODULES
 # | Native
-import os.path
+import argparse
 import configparser
+import os.path
 
 # | Third-Party
 from tweepy import TweepError
@@ -29,6 +30,18 @@ __maintainer__ = 'Joshua Carlson-Purcell'
 __email__ = 'jcarlson@carlso.net'
 __status__ = 'Development'
 
+def parseCliArgs():
+
+    # set arguments
+    cliParser = argparse.ArgumentParser(description='A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.')
+    cliParser.add_argument('-c', '--config', help='Configuration file to be used',default='conf/main.cfg')
+    cliParser.add_argument('-n', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
+    # cliParser.add_argument('-s', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
+    cliParser.add_argument('-y', '--assume-yes', action='store_true', help='Assume YES for all prompts', default=False)
+
+    # read in args
+    return cliParser.parse_args()
+
 def main():
     """
     Main runtime module
@@ -38,8 +51,11 @@ def main():
 
     lgLineBreak = '#####################################################################'
 
-    # read in config
-    configFile = 'conf/main.cfg'
+    # parse CLI arguments
+    cliParams = parseCliArgs()
+
+    # read in config file
+    configFile = cliParams.config
     cfg = None
     try:
         cfg = configparser.ConfigParser()
@@ -76,18 +92,41 @@ def main():
 
     print(lgLineBreak)
 
+    # check if the number of clauses to be used in tweet was provided via CLI param; it overrides the config file val
+    if cliParams.num_clauses:
+        numClauses = cliParams.num_clauses
+    else:
+        # use config value
+        numClauses = cfg['GENERAL']['numclauses']
+
     # generate new tweet from clauses
     newTweet = ''
+    numTweetGenIterations = 0
+    maxTweetGenIterations = 100
     while len(newTweet) == 0 or 140 < len(newTweet):
         # tweet msg is too long, try regenerating
-        newTweet = lib.bot.generateTweet(tweetClauses, int(cfg['GENERAL']['numclauses']))
+        newTweet = lib.bot.generateTweet(tweetClauses, int(numClauses))
+
+        # increase generation count
+        numTweetGenIterations += 1
+
+        # check if iteration max has been hit
+        if maxTweetGenIterations < numTweetGenIterations:
+            print('[ERROR] Maximum number of Tweet generation attempts (', maxTweetGenIterations, ') has been reached. '
+                    'Try reducing the number of clauses.')
+
+            exit(2)
+
     print('GENERATED TWEET:', newTweet)
 
     # publish tweet
     try:
-        tweetPubRslt = lib.bot.sendTweet(tApi, newTweet)
+        tweetPubRslt = lib.bot.sendTweet(tApi, newTweet, cliParams.assume_yes)
+        print('')
         if tweetPubRslt == -1:
             print('[INFO] Tweet not published, discarding...')
+        elif not tweetPubRslt:
+            print('[ERROR] could not publish tweet for an unknown reason :(')
         else:
             print('TWEET PUBLISHED SUCCESSFULLY! [ ID:',tweetPubRslt.id,']')
     except ValueError as valErr:
