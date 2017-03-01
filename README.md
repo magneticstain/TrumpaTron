@@ -6,8 +6,37 @@ A Python bot designed to create original tweets from the most recent @realdonald
 ## Usage
 Nothing is easier than running this application.  It's the greatest syntax ever, believe me!
 ```bash
-# ./trumpatron.py
+bot@trumpatron1 ~ $ ./trumpatron.py -h
+usage: trumpatron.py [-h] [-c CONFIG] [-n NUM_CLAUSES] [-y]
+
+A Python bot designed to create original tweets from the most recent
+@realdonaldtrump tweets.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        Configuration file to be used
+  -n NUM_CLAUSES, --num-clauses NUM_CLAUSES
+                        Number of clauses to use in Tweet
+  -y, --assume-yes      Assume YES for all prompts
+  
 ``` 
+
+### Examples
+Use tertiary config file:
+```bash
+bot@trumpatron1 ~ $ ./trumpatron.py -c conf/tertiary.cfg
+```
+
+Assume yes to all prompts using the default settings (automated tweeting):
+```bash
+bot@trumpatron1 ~ $ ./trumpatron.py -y
+```
+
+Use the settings in `conf/secondary.cfg`, generate a tweet with three clauses, and assume yes for all prompts:
+```bash
+bot@trumpatron1 ~ $ ./trumpatron.py -c conf/secondary.cfg -n 3 -y
+```
 
 ### Customizing Application
 A configuration file is used by the application for various settings, mostly related to Twitter API authentication.
