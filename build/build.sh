@@ -13,8 +13,9 @@ mkdir $APP_DIR > /dev/null 2>&1
 
 # run any tests
 
+
 # application runs
-./trumpatron.py -t
+./trumpatron.py -t || exit 1
 
 echo "Build complete!"
 
