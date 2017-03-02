@@ -80,11 +80,14 @@ def main():
     tApi = None
     tweetSet = []
     try:
-        tApi = lib.bot.connectToTwitterAPI(cfg['AUTH']['consumerkey'], cfg['AUTH']['consumersecret'],
+        # check if this is a test run
+        if not cliParams.test_run:
+            # not a test run, connect to API
+            tApi = lib.bot.connectToTwitterAPI(cfg['AUTH']['consumerkey'], cfg['AUTH']['consumersecret'],
                                            cfg['AUTH']['accesstoken'], cfg['AUTH']['accesstokensecret'])
 
-        # get public timeline tweets for user
-        tweetSet = tApi.user_timeline('realdonaldtrump')
+            # get public timeline tweets for user
+            tweetSet = tApi.user_timeline('realdonaldtrump')
     except TweepError as err:
         print('ERROR: could not connect to Twitter API / fetch tweets ::', err)
 
