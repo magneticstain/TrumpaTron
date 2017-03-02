@@ -43,6 +43,7 @@ def parseCliArgs():
     cliParser.add_argument('-n', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
     # cliParser.add_argument('-s', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
     cliParser.add_argument('-y', '--assume-yes', action='store_true', help='Assume YES for all prompts', default=False)
+    cliParser.add_argument('-t', '--test-run', action='store_true', help='Run TrumpaTron in test mode (i.e. no writes)', default=False)
 
     # read in args
     return cliParser.parse_args()
@@ -124,16 +125,22 @@ def main():
 
     print('GENERATED TWEET:', newTweet)
 
+
+
     # publish tweet
     try:
-        tweetPubRslt = lib.bot.sendTweet(tApi, newTweet, cliParams.assume_yes)
-        print('')
-        if tweetPubRslt == -1:
-            print('[INFO] Tweet not published, discarding...')
-        elif not tweetPubRslt:
-            print('[ERROR] could not publish tweet for an unknown reason :(')
+        # check if this is a test run
+        if not cliParams.test_run:
+            tweetPubRslt = lib.bot.sendTweet(tApi, newTweet, cliParams.assume_yes)
+            print('')
+            if tweetPubRslt == -1:
+                print('[INFO] Tweet not published, discarding...')
+            elif not tweetPubRslt:
+                print('[ERROR] could not publish tweet for an unknown reason :(')
+            else:
+                print('TWEET PUBLISHED SUCCESSFULLY! [ ID:',tweetPubRslt.id,']')
         else:
-            print('TWEET PUBLISHED SUCCESSFULLY! [ ID:',tweetPubRslt.id,']')
+            print('[INFO] application in test mode, exiting w/o sending tweet')
     except ValueError as valErr:
         print('ERROR: invalid value provided for tweet ::', newTweet, '::', valErr)
     except TweepError as err:
