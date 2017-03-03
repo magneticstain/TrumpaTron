@@ -16,7 +16,7 @@ python -m pytest build/tests/ || exit 1
 
 # application runs
 # config check/smoke test
-python ./trumpatron.py -k || exit 1
+python ./trumpatron.py -c conf/ro.cfg -t || exit 1
 
 echo "Build process complete!"
 
