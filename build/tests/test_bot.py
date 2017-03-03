@@ -13,9 +13,12 @@ CREATION_DATE: 2017-03-01
 
 # | Third-Party
 import pytest
+import tweepy
 
 # | Custom
 import lib.bot
 
-def testConnectToTwitterAPI_FAIL_ALL_BLANKS():
-    assert lib.bot.connectToTwitterAPI('', '', '', '') == None
+def testConnectToTwitterAPI_ALL_BLANKS():
+    api = lib.bot.connectToTwitterAPI('', '', '', '')
+
+    assert isinstance(api, tweepy.API)
