@@ -7,6 +7,10 @@ python:
     - "3.6"
 before_script:
     - pip install -r build/build_requirements.txt
-install: pip install .
-script: build/build.sh
-after_success: coveralls
+install:
+    - pip install .
+script:
+    - coverage run trumpatron.py -k
+    - build/build.sh
+after_success:
+    - coveralls
