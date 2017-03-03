@@ -1,4 +1,4 @@
 #
-# Requirements for TrumpaTron v1.0.0
+# Requirements for TrumpaTron
 #
 tweepy

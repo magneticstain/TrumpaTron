@@ -1,0 +1,6 @@
+#
+# Requirements for TrumpaTron Build Process
+#
+pytest
+coveralls
+tweepy

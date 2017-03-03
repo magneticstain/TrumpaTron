@@ -6,8 +6,7 @@ python:
     - "3.5"
     - "3.6"
 before_script:
-    - pip install -r requirements.txt
-    - pip install coveralls
+    - pip install -r build/build_requirements.txt
 install: pip install .
 script: build/build.sh
 after_success: coveralls
