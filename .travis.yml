@@ -10,7 +10,7 @@ before_script:
 install:
     - pip install .
 script:
-    - coverage run --source="." trumpatron.py -k
+    - coverage run --source="." trumpatron.py -c conf/ro.cfg -t
     - build/build.sh
 after_success:
     - coveralls

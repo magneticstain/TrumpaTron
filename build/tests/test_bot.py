@@ -37,3 +37,7 @@ def testFormatTweet_FORMATTED_TWEET():
     postFormattingTweet = 'Test of tweet that needs formatting!'
 
     assert postFormattingTweet == lib.bot.formatTweet(origTweet)
+
+def testSendTweet_BLANK_TWEET():
+    with pytest.raises(ValueError):
+        lib.bot.sendTweet(None, '', True)
