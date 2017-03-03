@@ -10,7 +10,6 @@ before_script:
 install:
     - pip install .
 script:
-    - coverage run trumpatron.py -k
     - build/build.sh
 after_success:
     - coveralls
