@@ -2,3 +2,4 @@
 .idea/
 conf/testing.cfg
 lib/__pycache__/
+.cache/
