@@ -11,12 +11,13 @@ APP_DIR="/opt/trumpatron/"
 echo "Creating application directory..."
 mkdir $APP_DIR > /dev/null 2>&1
 
-# run any tests
-
+# run unit tests
+python -m pytest build/tests/ || exit 1
 
 # application runs
-python ./trumpatron.py -t || exit 1
+# config check/smoke test
+python ./trumpatron.py -k || exit 1
 
-echo "Build complete!"
+echo "Build process complete!"
 
 exit 0

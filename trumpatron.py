@@ -43,7 +43,8 @@ def parseCliArgs():
     cliParser.add_argument('-n', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
     # cliParser.add_argument('-s', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
     cliParser.add_argument('-y', '--assume-yes', action='store_true', help='Assume YES for all prompts', default=False)
-    cliParser.add_argument('-t', '--test-run', action='store_true', help='Run TrumpaTron in test mode (i.e. no writes)', default=False)
+    cliParser.add_argument('-k', '--config-check', action='store_true', help='Try running TrumpaTron up to after the configs are read in', default=False)
+    cliParser.add_argument('-t', '--test-run', action='store_true', help='Run TrumpaTron in test mode (generate tweet w/o publishing)', default=False)
 
     # read in args
     return cliParser.parse_args()
@@ -76,18 +77,21 @@ def main():
 
         exit(1)
 
+    # stop here if running in test mode
+    if cliParams.config_check:
+        print('[INFO] configuration check SUCCESSFUL, exiting...')
+
+        exit()
+
     # connect to twitter API and fetch tweets
     tApi = None
     tweetSet = []
     try:
-        # check if this is a test run
-        if not cliParams.test_run:
-            # not a test run, connect to API
-            tApi = lib.bot.connectToTwitterAPI(cfg['AUTH']['consumerkey'], cfg['AUTH']['consumersecret'],
+        tApi = lib.bot.connectToTwitterAPI(cfg['AUTH']['consumerkey'], cfg['AUTH']['consumersecret'],
                                            cfg['AUTH']['accesstoken'], cfg['AUTH']['accesstokensecret'])
 
-            # get public timeline tweets for user
-            tweetSet = tApi.user_timeline('realdonaldtrump')
+        # get public timeline tweets for user
+        tweetSet = tApi.user_timeline('realdonaldtrump')
     except TweepError as err:
         print('ERROR: could not connect to Twitter API / fetch tweets ::', err)
 
