@@ -1,5 +1,5 @@
 # TrumpaTron
-[![Stories in Ready](https://badge.waffle.io/magneticstain/TrumpaTron.svg?label=ready&title=Ready)](http://waffle.io/magneticstain/TrumpaTron) [![Build Status](https://travis-ci.org/magneticstain/TrumpaTron.svg?branch=master)](https://travis-ci.org/magneticstain/TrumpaTron) [![Coverage Status](https://coveralls.io/repos/github/magneticstain/TrumpaTron/badge.svg?branch=master)](https://coveralls.io/github/magneticstain/TrumpaTron?branch=master) [![Documentation Status](https://readthedocs.org/projects/trumpatron/badge/?version=latest)](http://trumpatron.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/trumpatron/badge/?version=latest)](http://trumpatron.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/magneticstain/TrumpaTron.svg?branch=master)](https://travis-ci.org/magneticstain/TrumpaTron) [![Coverage Status](https://coveralls.io/repos/github/magneticstain/TrumpaTron/badge.svg)](https://coveralls.io/github/magneticstain/TrumpaTron) [![Stories in Ready](https://badge.waffle.io/magneticstain/TrumpaTron.svg?label=ready&title=Ready)](http://waffle.io/magneticstain/TrumpaTron)
 
 A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.
 
@@ -26,10 +26,24 @@ optional arguments:
   -n NUM_CLAUSES, --num-clauses NUM_CLAUSES
                         Number of clauses to use in Tweet
   -y, --assume-yes      Assume YES for all prompts
-  
+  -k, --config-check    Try running TrumpaTron up to after the configs are
+                        read in
+  -t, --test-run        Run TrumpaTron in test mode (generate tweet w/o
+                        publishing)
+
 ``` 
 
 ### Examples
+Perform a configuration check on the primary config:
+```bash
+bot@trumpatron1 ~ $ ./trumpatron.py -c conf/primary.cfg -k
+```
+
+Perform a test run using the default config:
+```bash
+bot@trumpatron1 ~ $ ./trumpatron.py -t
+```
+
 Use tertiary config file:
 ```bash
 bot@trumpatron1 ~ $ ./trumpatron.py -c conf/tertiary.cfg

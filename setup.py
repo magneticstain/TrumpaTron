@@ -16,5 +16,6 @@ setup(name='TrumpaTron',
       description='Donald Trump bot',
       author='Joshua Carlson-Purcell',
       author_email='josh@carlson.ninja',
-      url='https://github.com/magneticstain/TrumpaTron'
+      url='https://github.com/magneticstain/TrumpaTron',
+      packages=['lib.bot']
      )
