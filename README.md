@@ -1,5 +1,5 @@
 # TrumpaTron
-[![Build Status](https://travis-ci.org/magneticstain/TrumpaTron.svg?branch=master)](https://travis-ci.org/magneticstain/TrumpaTron)[![Coverage Status](https://coveralls.io/repos/github/magneticstain/TrumpaTron/badge.svg?branch=master)](https://coveralls.io/github/magneticstain/TrumpaTron?branch=master)[![Documentation Status](https://readthedocs.org/projects/trumpatron/badge/?version=latest)](http://trumpatron.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/magneticstain/TrumpaTron.svg?branch=master)](https://travis-ci.org/magneticstain/TrumpaTron) [![Coverage Status](https://coveralls.io/repos/github/magneticstain/TrumpaTron/badge.svg?branch=master)](https://coveralls.io/github/magneticstain/TrumpaTron?branch=master) [![Documentation Status](https://readthedocs.org/projects/trumpatron/badge/?version=latest)](http://trumpatron.readthedocs.io/en/latest/?badge=latest)
 
 A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.
 
