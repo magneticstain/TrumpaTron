@@ -10,7 +10,7 @@ before_script:
 install:
     - pip install .
 script:
-    - coverage run --omit="/virtualenv" trumpatron.py -k
+    - coverage run --source="." trumpatron.py -k
     - build/build.sh
 after_success:
     - coveralls
