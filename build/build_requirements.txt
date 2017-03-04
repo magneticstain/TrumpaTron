@@ -2,5 +2,6 @@
 # Requirements for TrumpaTron Build Process
 #
 pytest
+pytest-cov
 coveralls
 tweepy
