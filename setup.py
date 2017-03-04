@@ -18,5 +18,5 @@ setuptools.setup(
     author='Joshua Carlson-Purcell',
     author_email='josh@carlson.ninja',
     url='https://github.com/magneticstain/TrumpaTron'
-    packages = setuptools.find_packages(exclude=['build', 'conf']),
+    packages=setuptools.find_packages(exclude=['build', 'conf']),
 )
