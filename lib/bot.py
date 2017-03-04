@@ -94,6 +94,14 @@ def formatTweet(tweetTxt):
         if not tweetTxt:
             # set to default tweet clause
             tweetTxt = '<3'
+        else:
+            # continue formatting
+            # capitalize the first letter in the clause
+            tweetTxt = tweetTxt[0].capitalize() + tweetTxt[1:]
+
+            # make sure it's punctuated or the default clause
+            if not ispunct(tweetTxt[-1]) and tweetTxt != '<3':
+                tweetTxt += '!'
 
     return tweetTxt
 
@@ -154,16 +162,7 @@ def getRandomTweetClause(clauses):
     """
 
     # make selection
-    clause = choice(clauses)
-
-    # capitalize the first letter in the clause
-    clause = clause[0].capitalize() + clause[1:]
-
-    # make sure it's punctuated or the default clause
-    if not ispunct(clause[-1]) and clause != '<3':
-        clause += '!'
-
-    return clause
+    return choice(clauses)
 
 
 def generateTweet(tweetClauses, numClausesToUse=3):

@@ -13,7 +13,6 @@ script:
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 3
     - coverage combine
-    - ls -la
     - build/build.sh
 after_success:
     - coveralls
