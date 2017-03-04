@@ -10,7 +10,7 @@ before_script:
 install:
     - pip install .
 script:
-    - py.test -cov=trumpatron build/
+    - py.test --cov=trumpatron build/
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 3
     - coverage combine
