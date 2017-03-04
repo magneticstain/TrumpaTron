@@ -13,7 +13,7 @@ CREATION_DATE: 2017-02-27
 # MODULES
 # | Native
 from random import choice,shuffle
-from curses.ascii import ispunct
+from curses.ascii import ispunct,isdigit
 import re
 
 # | Third-Party
@@ -88,7 +88,13 @@ def formatTweet(tweetTxt):
         raise ValueError('ERROR: blank tweet text provided')
     else:
         # filter out URLs and strip surrounding whitespace
-        tweetTxt = re.sub(r'[:\s]*http\S+(|\s)', ' ', tweetTxt).strip()
+        tweetTxt = re.sub(r'[:\s]*http\S+(|\s)', '', tweetTxt).strip()
+
+        # check if ll text has been stripped
+        if not tweetTxt:
+            # set to default tweet clause
+            tweetTxt = '<3'
+        print('############# <', tweetTxt, '> ###########################')
 
     return tweetTxt
 
@@ -154,8 +160,8 @@ def getRandomTweetClause(clauses):
     # capitalize the first letter in the clause
     clause = clause[0].capitalize() + clause[1:]
 
-    # make sure it's punctuated
-    if not ispunct(clause[-1]):
+    # make sure it's punctuated or the default clause
+    if not ispunct(clause[-1]) and clause != '<3':
         clause += '!'
 
     return clause

@@ -41,7 +41,6 @@ def parseCliArgs():
     cliParser = argparse.ArgumentParser(description='A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.')
     cliParser.add_argument('-c', '--config', help='Configuration file to be used',default='conf/main.cfg')
     cliParser.add_argument('-n', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
-    # cliParser.add_argument('-s', '--num-clauses', help='Number of clauses to use in Tweet', default=0)
     cliParser.add_argument('-y', '--assume-yes', action='store_true', help='Assume YES for all prompts', default=False)
     cliParser.add_argument('-k', '--config-check', action='store_true', help='Try running TrumpaTron up to after the configs are read in', default=False)
     cliParser.add_argument('-t', '--test-run', action='store_true', help='Run TrumpaTron in test mode (generate tweet w/o publishing)', default=False)
@@ -131,8 +130,6 @@ def main():
             exit(2)
 
     print('GENERATED TWEET:', newTweet)
-
-
 
     # publish tweet
     try:
