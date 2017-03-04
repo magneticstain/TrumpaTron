@@ -94,7 +94,6 @@ def formatTweet(tweetTxt):
         if not tweetTxt:
             # set to default tweet clause
             tweetTxt = '<3'
-        print('############# <', tweetTxt, '> ###########################')
 
     return tweetTxt
 
@@ -200,9 +199,6 @@ def generateTweet(tweetClauses, numClausesToUse=3):
 
     # concatonate tweet
     newTweet = longestClause + ' ' + middleClauses + shortestClause
-
-    # print message length for debugging
-    # print('MSG LENGTH:', str(len(newTweet)))
 
     return newTweet
 
