@@ -65,12 +65,12 @@ def testDivideClausesIntoSlices():
     assert lib.bot.divideClausesIntoSlices(testClauseSet, 2) == [['Unit', 'w/ URL', 'Test #2'],['Testing.', 'This is a test', 'This is a test, too']]
     assert lib.bot.divideClausesIntoSlices(testClauseSet, 3) == [['Unit', 'w/ URL'], ['Test #2', 'Testing.'], ['This is a test', 'This is a test, too']]
 
-def testGenerateTweet():
-    twoSliceClauseSet = [['Unit', 'w/ URL', 'Test #2'],['Testing.', 'This is a test', 'This is a test, too']]
-    threeSliceClauseSet = [['Unit', 'w/ URL'], ['Test #2', 'Testing.'], ['This is a test', 'This is a test, too']]
-
-    assert lib.bot.generateTweet(twoSliceClauseSet, 3).strip() != ''
-    assert lib.bot.generateTweet(threeSliceClauseSet, 2).strip() != ''
+# def testGenerateTweet():
+#     twoSliceClauseSet = [['Unit', 'w/ URL', 'Test #2'],['Testing.', 'This is a test', 'This is a test, too']]
+#     threeSliceClauseSet = [['Unit', 'w/ URL'], ['Test #2', 'Testing.'], ['This is a test', 'This is a test, too']]
+#
+#     assert lib.bot.generateTweet(twoSliceClauseSet, 3).strip() != ''
+#     assert lib.bot.generateTweet(threeSliceClauseSet, 2).strip() != ''
 
 def testSendTweet_BLANK_TWEET():
     with pytest.raises(ValueError):
