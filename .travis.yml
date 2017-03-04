@@ -12,7 +12,7 @@ install:
 script:
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 3
-    - coverage run --parallel-mode -i --source="." trumpatron.py -c conf/nonexistent.cfg -t
+    - coverage run --parallel-mode --source="." trumpatron.py -c conf/nonexistent.cfg -t || exit 0
     - coverage combine
     - ls -la
     - build/build.sh
