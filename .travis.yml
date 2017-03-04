@@ -10,7 +10,10 @@ before_script:
 install:
     - pip install .
 script:
-    - coverage run --source="." trumpatron.py -c conf/ro.cfg -t -n 3
+    - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
+    - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 3
+    - coverage run --parallel-mode -i --source="." trumpatron.py -c conf/nonexistent.cfg -t
+    - coverage combine
     - ls -la
     - build/build.sh
 after_success:
