@@ -194,11 +194,12 @@ def generateTweet(tweetClauses, numClausesToUse=3):
             currentClause = getRandomTweetClause(clauseSlice)
             middleClauses += currentClause
 
-        # cap w/ period
-        middleClauses += '. '
+        # cap w/ period if not already punctuated
+        if not ispunct(middleClauses[-1]):
+            middleClauses += '.'
 
     # concatonate tweet
-    newTweet = longestClause + ' ' + middleClauses + shortestClause
+    newTweet = longestClause + ' ' + middleClauses + ' ' + shortestClause
 
     return newTweet
 

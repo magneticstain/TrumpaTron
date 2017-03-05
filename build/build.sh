@@ -5,12 +5,6 @@
 #   - express build TrumpaTron for a given server
 #
 
-APP_DIR="/opt/trumpatron/"
-
-# create directories
-echo "Creating application directory..."
-mkdir $APP_DIR > /dev/null 2>&1
-
 # run unit tests
 python -m pytest build/tests/ || exit 1
 
