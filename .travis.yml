@@ -2,7 +2,7 @@
 #dist:
 #    - precise
 #    - trusty
-sudo: required
+sudo: false
 language: python
 python:
     - "3.3"
@@ -11,12 +11,12 @@ python:
     - "3.6"
 before_script:
     - pip install -r build/build_requirements.txt
-    - sudo mkdir /var/log/trumpatron
+#    - sudo mkdir /var/log/trumpatron
     - whoami
 install:
     - pip install .
 script:
-    # - python -m pytest --cov=lib.trump build/
+#    - python -m pytest --cov=lib.trump build/
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 3
     - coverage combine
