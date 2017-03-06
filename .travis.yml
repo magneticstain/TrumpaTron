@@ -1,7 +1,7 @@
-os: linux
-dist:
-    - precise
-    - trusty
+#os: linux
+#dist:
+#    - precise
+#    - trusty
 sudo: required
 language: python
 python:
