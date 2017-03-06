@@ -1,4 +1,8 @@
-sudo: false
+os: linux
+dist:
+    - precise
+    - trusty
+sudo: true
 language: python
 python:
     - "3.3"
@@ -7,7 +11,7 @@ python:
     - "3.6"
 before_script:
     - pip install -r build/build_requirements.txt
-    - mkdir /var/log/trumpatron
+    - sudo mkdir /var/log/trumpatron
     - whoami
 install:
     - pip install .
