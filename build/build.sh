@@ -5,8 +5,10 @@
 #   - express build TrumpaTron for a given server
 #
 
-# run unit tests
-python -m pytest build/tests/ || exit 1
+if [[ "$1" != '--no-tests' ]]
+then
+    # run unit tests
+    python -m pytest build/tests/ || exit 1
 
 # application runs
 # config check/smoke test
