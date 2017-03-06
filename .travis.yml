@@ -2,7 +2,7 @@ os: linux
 dist:
     - precise
     - trusty
-sudo: true
+sudo: required
 language: python
 python:
     - "3.3"
