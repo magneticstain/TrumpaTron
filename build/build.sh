@@ -9,6 +9,7 @@ if [[ "$1" != '--no-tests' ]]
 then
     # run unit tests
     python -m pytest build/tests/ || exit 1
+fi
 
 # application runs
 # config check/smoke test
