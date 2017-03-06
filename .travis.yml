@@ -1,3 +1,4 @@
+dist: trusty
 sudo: required
 language: python
 python:
@@ -8,7 +9,8 @@ python:
 before_script:
     - pip install -r build/build_requirements.txt
     - sudo mkdir /var/log/trumpatron
-    - whoami
+    - sudo chown -R travis /var/log/trumpatron/
+    - sudo chmod -R 774 /var/log/trumpatron/
 install:
     - pip install .
 script:
