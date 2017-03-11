@@ -99,8 +99,12 @@ def main():
     cfg = None
     try:
         cfg = parseConfigFile(cliParams.config_file)
+    except ImportError as err:
+        print('[CRIT] configparser module not available\nDETAILS:\n', err.msg)
+
+        exit(1)
     except configparser.Error as err:
-        print('[CRIT] could not parse config file :: [ ', cliParams.config_file, ' ]\nDETAILS:\n', err.message, sep="")
+        print('[CRIT] could not parse config file :: [ ', cliParams.config_file, ' ]\nDETAILS:\n', err.message)
 
         exit(1)
 
