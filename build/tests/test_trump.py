@@ -229,9 +229,44 @@ def testDivideClausesIntoSlices(validCliParser, validCfgParams):
     tBot.config['numClauses'] = 3
     assert tBot.divideClausesIntoSlices() == [['Unit', 'w/ URL'], ['Test #2', 'Testing.'], ['This is a test', 'This is a test, too']]
 
+
+def testGenerateTweet_NO_TWEET_CLAUSES(validCliParser, roCfgParams):
+    # create Trump instance
+    tBot = lib.trump.Trump(validCliParser, roCfgParams)
+
+    with pytest.raises(ValueError):
+        # generate tweet
+        tBot.generateTweet()
+
+
+def testGenerateTweet_VALID(validCliParser, roCfgParams):
+    # create Trump instance
+    tBot = lib.trump.Trump(validCliParser, roCfgParams)
+
+    # set clauses
+    tBot.tweetClauses = ['Unit', 'w/ URL', 'Test #2', 'Testing.', 'This is a test', 'This is a test, too']
+
+    # generate tweet
+    tBot.generateTweet()
+
+    assert tBot.generatedTweet != ''
+
+
 def testSendTweet_BLANK_TWEET(validCliParser, roCfgParams):
     # create Trump instance
     tBot = lib.trump.Trump(validCliParser, roCfgParams)
 
     with pytest.raises(ValueError):
         tBot.sendTweet()
+
+
+def testStartBot_TEST_RUN(validCliParser, roCfgParams):
+    # create Trump instance
+    tBot = lib.trump.Trump(validCliParser, roCfgParams)
+
+    # set config to enable test run mode
+    tBot.config['testRun'] = True
+
+    # start test run
+    tBot.startBot('realdonaldtrump')
+

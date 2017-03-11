@@ -196,34 +196,38 @@ class Trump(lib.bannon.Bannon):
         :return: void
         """
 
-        slices = self.divideClausesIntoSlices()
+        # check if tweet clauses are available
+        if self.tweetClauses:
+            slices = self.divideClausesIntoSlices()
 
-        # generate tweet from clause slices
-        # longest slice clause is always first, shortest is last, and the middle are chosen at random for
-        # n - 2 clausesToUse
-        longestClause = self.getRandomTweetClause(slices[-1])
-        slices.pop(-1)
+            # generate tweet from clause slices
+            # longest slice clause is always first, shortest is last, and the middle are chosen at random for
+            # n - 2 clausesToUse
+            longestClause = self.getRandomTweetClause(slices[-1])
+            slices.pop(-1)
 
-        shortestClause = self.getRandomTweetClause(slices[0])
-        slices.pop(0)
+            shortestClause = self.getRandomTweetClause(slices[0])
+            slices.pop(0)
 
-        # generate middle clauses if any slices are still left
-        middleClauses = ''
-        if slices:
-            # shuffle middle slices
-            shuffle(slices)
-            for clauseSlice in slices:
-                currentClause = self.getRandomTweetClause(clauseSlice)
-                middleClauses += currentClause
+            # generate middle clauses if any slices are still left
+            middleClauses = ''
+            if slices:
+                # shuffle middle slices
+                shuffle(slices)
+                for clauseSlice in slices:
+                    currentClause = self.getRandomTweetClause(clauseSlice)
+                    middleClauses += currentClause
 
-            # cap w/ period if not already punctuated
-            if not ispunct(middleClauses[-1]):
-                middleClauses += '.'
+                # cap w/ period if not already punctuated
+                if not ispunct(middleClauses[-1]):
+                    middleClauses += '.'
 
-        # concatonate tweet
-        newTweet = longestClause + ' ' + middleClauses + ' ' + shortestClause
+            # concatonate tweet
+            newTweet = longestClause + ' ' + middleClauses + ' ' + shortestClause
 
-        self.generatedTweet = newTweet
+            self.generatedTweet = newTweet
+        else:
+            raise ValueError('no tweet clauses available')
 
 
     def sendTweet(self):
