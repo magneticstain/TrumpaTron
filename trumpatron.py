@@ -35,21 +35,28 @@ def parseCliArgs():
     """
     Parse CLI arguments
 
-    :return: dictionary of arg key-val's
+    :return: post-parsing ArgumentParser() obj
     """
 
     # set CLI arguments
-    cliParser = argparse.ArgumentParser(description='A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.')
+    cliParser = argparse.ArgumentParser(
+        description='A Python bot designed to create original tweets from the most recent @realdonaldtrump tweets.')
     cliParser.add_argument('-f', '--log-file', help='File to write application logs to')
     cliParser.add_argument('-l', '--log-level', help='Minimum log severity level to log to file', default='INFO')
     cliParser.add_argument('-c', '--config-file', help='Configuration file to be used',default='conf/main.cfg')
     cliParser.add_argument('-n', '--num-clauses', help='Number of clauses to use in Tweet', default=0, type=int)
     cliParser.add_argument('-y', '--assume-yes', action='store_true', help='Assume YES for all prompts', default=False)
-    cliParser.add_argument('-k', '--config-check', action='store_true', help='Try running TrumpaTron up to after the configs are read in', default=False)
-    cliParser.add_argument('-t', '--test-run', action='store_true', help='Run TrumpaTron in test mode (generate tweet w/o publishing)', default=False)
-    cliParser.add_argument('-d', '--daemon-mode', action='store_true', help='Run TrumpaTron in daemon mode (run persistently)', default=False)
-    cliParser.add_argument('-s', '--sleep-delay', help='Time to wait in between runs (used w/ -d|--daemon-mode)', default=1, type=int)
-    cliParser.add_argument('-r', '--random-sleep', action='store_true', help='Sleep for a random delay, with the value for -s|--sleep-delay being the max sleep time', default=False)
+    cliParser.add_argument('-k', '--config-check', action='store_true',
+                           help='Try running TrumpaTron up to after the configs are read in', default=False)
+    cliParser.add_argument('-t', '--test-run', action='store_true',
+                           help='Run TrumpaTron in test mode (generate tweet w/o publishing)', default=False)
+    cliParser.add_argument('-d', '--daemon-mode', action='store_true',
+                           help='Run TrumpaTron in daemon mode (run persistently)', default=False)
+    cliParser.add_argument('-s', '--sleep-delay', help='Time to wait in between runs (used w/ -d|--daemon-mode)',
+                           default=1, type=int)
+    cliParser.add_argument('-r', '--random-sleep', action='store_true',
+                           help='Sleep for a random delay, with the value for -s|--sleep-delay being the max sleep time'
+                           , default=False)
 
     # read in args
     return cliParser.parse_args()
@@ -112,7 +119,7 @@ def main():
 
         exit()
 
-    # start trump bot
+    # start trump bot, providing twitter username of target acct as a param
     trump.startBot('realdonaldtrump')
 
 

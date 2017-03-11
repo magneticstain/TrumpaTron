@@ -27,7 +27,7 @@ __email__ = 'jcarlson@carlso.net'
 __status__ = 'Production'
 
 
-class Bannon():
+class Bannon:
     """
     Bannon.py
 

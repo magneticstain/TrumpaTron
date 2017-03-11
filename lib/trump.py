@@ -198,7 +198,8 @@ class Trump(lib.bannon.Bannon):
         slices = self.divideClausesIntoSlices()
 
         # generate tweet from clause slices
-        # longest slice clause is always first, shortest is last, and the middle are chosen at random for n - 2 clausesToUse
+        # longest slice clause is always first, shortest is last, and the middle are chosen at random for
+        # n - 2 clausesToUse
         longestClause = self.getRandomTweetClause(slices[-1])
         slices.pop(-1)
 
@@ -275,7 +276,8 @@ class Trump(lib.bannon.Bannon):
 
                 # check if iteration max has been hit
                 if maxTweetGenIterations < numTweetGenIterations:
-                    self.logger.critical('Maximum number of Tweet generation attempts ( ' + str(maxTweetGenIterations) + ' ) has been reached. Try reducing the number of clauses.')
+                    self.logger.critical('Maximum number of Tweet generation attempts ( ' + str(maxTweetGenIterations)
+                                         + ' ) has been reached. Try reducing the number of clauses.')
 
                     exit(2)
 
