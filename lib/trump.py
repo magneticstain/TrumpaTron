@@ -264,10 +264,12 @@ class Trump(lib.bannon.Bannon):
         while True:
             # fetch tweets
             self.getTweets(twitterUser)
+            # self.logger.debug('RAW TWEETS :: ' + str(self.tweetSet))
 
             # splice tweets into clauses and prune
             self.spliceTweets()
             self.pruneTweetClauses()
+            # self.logger.debug('POST-SPLICED AND PRUNED TWEET CLAUSES :: ' + str(self.tweetClauses))
 
             # generate new tweet from clauses
             numTweetGenIterations = 0
