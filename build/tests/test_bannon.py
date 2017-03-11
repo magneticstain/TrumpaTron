@@ -12,8 +12,8 @@ CREATION_DATE: 2017-03-01
 # | Native
 
 # | Third-Party
-import pytest
 import argparse
+import pytest
 import tweepy
 
 # | Custom
@@ -57,12 +57,14 @@ def validCliParser():
     # create dummy argparse obj
     return DummyArgParse()
 
+
 @pytest.fixture()
 def invalidCliParser():
     # create a purposefully invalid dummy argparse obj
     DAP = DummyArgParse_MISSING_PARAMS()
 
     return DAP
+
 
 @pytest.fixture()
 def validCfgParams():
@@ -112,4 +114,58 @@ def testSetConfig_MISSING_PARAMS(invalidCliParser, validCfgParams):
     # should throw an attribute error
     with pytest.raises(AttributeError):
         bBot = lib.bannon.Bannon(invalidCliParser, validCfgParams)
+
+
+def testInitializeLogger_VALID(validCliParser, validCfgParams):
+    # create Bannon instance
+    bBot = lib.bannon.Bannon(validCliParser, validCfgParams)
+
+    # set relevant config values
+    bBot.config['loggingLvl'] = 'INFO'
+    bBot.config['logFile'] = '/var/log/trumpatron/app_test.log'
+
+    # initialize logger
+    bBot.initializeLogger(__name__)
+
+
+def testInitializeLogger_INVALID_LOG_LVL(validCliParser, validCfgParams):
+    # create Bannon instance
+    bBot = lib.bannon.Bannon(validCliParser, validCfgParams)
+
+    # set relevant config values
+    bBot.config['loggingLvl'] = 'INFORM_LVL5!'
+    bBot.config['logFile'] = '/var/log/trumpatron/app_test.log'
+
+    # initialize logger
+    # should throw an exception due to invalid logging lvl
+    with pytest.raises(AttributeError):
+        bBot.initializeLogger(__name__)
+
+
+def testInitializeLogger_INVALID_LOG_FILE(validCliParser, validCfgParams):
+    # create Bannon instance
+    bBot = lib.bannon.Bannon(validCliParser, validCfgParams)
+
+    # set relevant config values
+    bBot.config['loggingLvl'] = 'INFO'
+    bBot.config['logFile'] = '/invalid/log/file/test.log'
+
+    # initialize logger
+    # should throw an exception due to invalid log file
+    with pytest.raises(FileNotFoundError):
+        bBot.initializeLogger(__name__)
+
+
+def testInitializeLogger_INVALID_LOG_FORMAT(validCliParser, validCfgParams):
+    # create Bannon instance
+    bBot = lib.bannon.Bannon(validCliParser, validCfgParams)
+
+    # set relevant config values
+    bBot.config['loggingLvl'] = 'INFO'
+    bBot.config['logFile'] = '/var/log/trumpatron/app_test.log'
+
+    # initialize logger
+    # with an invalid log format, any format is accepted and the backend library is asked to handle it
+    # right now, no exception should be thrown
+    bBot.initializeLogger(__name__, '!!! INVALID LOG FORMAT !!!')
 

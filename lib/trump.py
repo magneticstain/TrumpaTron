@@ -81,6 +81,7 @@ class Trump(lib.bannon.Bannon):
         for tweet in rawTweets:
             self.tweetSet.append(tweet.text)
 
+
     def spliceTweets(self):
         """
         Splice a set of tweets into a list of individual clauses
