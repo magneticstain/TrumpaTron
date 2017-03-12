@@ -152,6 +152,27 @@ def testGetTweets_INVALID_TWITTER_USERNAME(validCliParser, roCfgParams):
         tBot.getTweets('aiojwrrwtnnnnnaisdjfoiajsdif88892lnl132323')
 
 
+def testFlushTweetData_SUCCESSFUL(validCliParser, roCfgParams):
+    # create Trump instance
+    tBot = lib.trump.Trump(validCliParser, roCfgParams)
+
+    # set tweets, tweet clauses, and generated tweet
+    # create test set of Status objs
+    status1 = 'This is a test. Testing.'
+    status2 = 'Test #2. Unit. Test.'
+    testTweetSet = [status1, status2]
+    tBot.tweetSet = testTweetSet
+    tBot.tweetClauses = ['This is a test', 'Testing.', 'Test #2', 'Unit', 'Test.']
+    tBot.generatedTweet = 'Test tweet!'
+
+    # flush tweet data
+    tBot.flushTweetData()
+
+    assert tBot.tweetSet == []
+    assert tBot.tweetClauses == []
+    assert tBot.generatedTweet == ''
+
+
 def testSpliceTweets(validCliParser, validCfgParams):
     # create Trump instance
     tBot = lib.trump.Trump(validCliParser, validCfgParams)
