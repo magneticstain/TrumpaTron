@@ -16,8 +16,8 @@ install:
 script:
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t
     - coverage run --parallel-mode --source="." trumpatron.py -c conf/ro.cfg -t -n 2
-    - coverage combine
     - build/build.sh
+    - coverage combine
 after_success:
     - tail /var/log/trumpatron/app.log
     - coveralls
