@@ -14,7 +14,7 @@ CREATION_DATE: 2017-02-27
 from random import choice, shuffle, randint
 from curses.ascii import ispunct
 import re
-from os import fork
+import os
 import time
 
 # | Third-Party
@@ -80,6 +80,18 @@ class Trump(lib.bannon.Bannon):
         # strip tweet text from raw tweets
         for tweet in rawTweets:
             self.tweetSet.append(tweet.text)
+
+
+    def flushTweetData(self):
+        """
+        Flush all fetched tweets, tweet clauses, and generated tweets
+
+        :return: void
+        """
+
+        self.tweetSet = []
+        self.tweetClauses = []
+        self.generatedTweet = ''
 
 
     def spliceTweets(self):
@@ -260,16 +272,16 @@ class Trump(lib.bannon.Bannon):
         :return: void
         """
 
-        # start while loop for daemon mode
+        # start daemon loop
         while True:
             # fetch tweets
             self.getTweets(twitterUser)
-            # self.logger.debug('RAW TWEETS :: ' + str(self.tweetSet))
+            self.logger.debug('RAW TWEETS :: ' + str(self.tweetSet))
 
             # splice tweets into clauses and prune
             self.spliceTweets()
             self.pruneTweetClauses()
-            # self.logger.debug('POST-SPLICED AND PRUNED TWEET CLAUSES :: ' + str(self.tweetClauses))
+            self.logger.debug('SPLICED AND PRUNED TWEET CLAUSES :: ' + str(self.tweetClauses))
 
             # generate new tweet from clauses
             numTweetGenIterations = 0
@@ -287,7 +299,6 @@ class Trump(lib.bannon.Bannon):
                                          + ' ) has been reached. Try reducing the number of clauses.')
 
                     exit(2)
-
             self.logger.debug('GENERATED TWEET: ' + self.generatedTweet)
 
             # publish tweet
@@ -305,36 +316,53 @@ class Trump(lib.bannon.Bannon):
                     else:
                         self.logger.info('TWEET PUBLISHED SUCCESSFULLY! [ ID: ' + str(tweetPubRslt.id) + ' ]')
                 else:
-                    self.logger.info('application in test mode, exiting w/o sending tweet')
+                    self.logger.info('application in test mode, not publishing tweet')
             except ValueError as valErr:
-                self.logger.warning('invalid value provided for tweet :: ' + newTweet + ' :: ' + str(valErr))
+                self.logger.warning('invalid value provided for tweet :: ' + self.generatedTweet + ' :: ' + str(valErr))
             except tweepy.TweepError as err:
                 self.logger.critical('could not publish tweet :: ' + self.generatedTweet + ' :: '
                                      + str(err.response) + ' :: ' + str(err.reason))
 
                 exit(1)
 
-            # check if we're in daemon mode and should restart loop or not
+            # check if daemonization is requested, break out of loop if not
             if not self.config['daemonMode']:
                 break
             else:
-                # start by forking to a bg process
-                if fork():
-                    # fork successful, exit main process
-                    exit()
-
-                # in daemon mode, sleep for n second(s), where 1 <= n
-                if self.config['sleepDelay']:
-                    # check if random delay has been requested
-                    if self.config['randomSleep']:
-                        sleepDelay = randint(1, self.config['sleepDelay'])
-                    else:
-                        sleepDelay = self.config['sleepDelay']
+                # try forking the process
+                pidChild = os.fork()
+                if pidChild:
+                    # in parent process, exit
+                    break
                 else:
-                    # sleep delay not specified, use default
-                    sleepDelay = 1
+                    # in child process
+                    # decouple process
+                    try:
+                        os.setsid()
+                        os.chdir("/")
+                        os.umask(0)
+                    except PermissionError as permErr:
+                        # this is normally caused by setsid, andmeans the user isn't sudo,
+                        # it's non-critical, so we'll just log a message and move along
+                        self.logger.warning('not able to ensure daemon will continue running between sessions, '
+                                            'probably running as non-sudo user :: [ ' + str(permErr) + ' ]')
+                        pass
 
-                # perform sleep
-                self.logger.debug('sleeping for [ ' + str(sleepDelay) + ' ] seconds...')
-                time.sleep(sleepDelay)
+                    # flush data
+                    self.flushTweetData()
+
+                    # in daemon mode, sleep for n second(s), where 1 <= n
+                    if self.config['sleepDelay']:
+                        # check if random delay has been requested
+                        if self.config['randomSleep']:
+                            sleepDelay = randint(1, self.config['sleepDelay'])
+                        else:
+                            sleepDelay = self.config['sleepDelay']
+                    else:
+                        # sleep delay not specified, use default
+                        sleepDelay = 1
+
+                    # perform sleep
+                    self.logger.debug('sleeping for [ ' + str(sleepDelay) + ' ] seconds...')
+                    time.sleep(sleepDelay)
 

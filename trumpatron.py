@@ -11,9 +11,10 @@ CREATION_DATE: 2017-02-27
 
 # MODULES
 # | Native
+from os import path
 import argparse
 import configparser
-from os import path
+import daemon
 
 # | Third-Party
 from tweepy import TweepError
@@ -123,8 +124,11 @@ def main():
 
         exit()
 
-    # start trump bot, providing twitter username of target acct as a param
+    # start trump bot, providing twitter username of target acct as a param, and place within daemon context
+    # with daemon.DaemonContext():
     trump.startBot('realdonaldtrump')
+
+    trump.logger.debug('exiting TrumpaTron...')
 
 
 if __name__ == '__main__':
