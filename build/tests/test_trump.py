@@ -152,9 +152,9 @@ def testGetTweets_INVALID_TWITTER_USERNAME(validCliParser, roCfgParams):
         tBot.getTweets('aiojwrrwtnnnnnaisdjfoiajsdif88892lnl132323')
 
 
-def testFlushTweetData_SUCCESSFUL(validCliParser, roCfgParams):
+def testFlushTweetData_SUCCESSFUL(validCliParser, validCfgParams):
     # create Trump instance
-    tBot = lib.trump.Trump(validCliParser, roCfgParams)
+    tBot = lib.trump.Trump(validCliParser, validCfgParams)
 
     # set tweets, tweet clauses, and generated tweet
     # create test set of Status objs

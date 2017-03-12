@@ -251,7 +251,8 @@ class Trump(lib.bannon.Bannon):
 
         if self.generatedTweet:
             # send tweet to authenticated account using tweepy api connection
-            if not self.config['assumeYes']:
+            if not self.config['assumeYes'] and not self.config['daemonMode']:
+                # confirmation required, prompt user
                 print('GENERATED TWEET:', self.generatedTweet)
                 shouldPublish = input('=> Would you like to publish this tweet? [y/N]: ')
                 shouldPublish = shouldPublish.strip().lower()

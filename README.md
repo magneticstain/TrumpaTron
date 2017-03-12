@@ -11,6 +11,17 @@ the most recent @realdonaldtrump tweets, and mixes statements from those tweets 
 
 After being generated, it's tweeted to the @trumpatron1 account.
 
+## Requirements
+### OS
+* Debian 6+
+* Ubuntu 14.04+
+* CentOS 6+
+
+### Software
+* python 3.3+
+* pip3
+* setuptools (if installing libraries)
+
 ## Installation
 To install TrumpaTron locally, follow these steps:
 
