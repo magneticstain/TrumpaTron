@@ -13,12 +13,10 @@ CREATION_DATE: 2017-03-01
 
 # | Third-Party
 import pytest
-import argparse
 import tweepy
 
 # | Custom
 import lib.trump
-import trumpatron
 
 
 class DummyArgParse:

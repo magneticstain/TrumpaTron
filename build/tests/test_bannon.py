@@ -14,7 +14,6 @@ CREATION_DATE: 2017-03-01
 # | Third-Party
 import argparse
 import pytest
-import tweepy
 
 # | Custom
 import lib.bannon
