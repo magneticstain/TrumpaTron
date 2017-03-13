@@ -21,7 +21,7 @@ import logging
 __author__ = 'Joshua Carlson-Purcell'
 __copyright__ = 'Copyright 2017, CarlsoNet'
 __license__ = 'MIT'
-__version__ = '1.0.1'
+__version__ = '2.0.0'
 __maintainer__ = 'Joshua Carlson-Purcell'
 __email__ = 'jcarlson@carlso.net'
 __status__ = 'Production'
